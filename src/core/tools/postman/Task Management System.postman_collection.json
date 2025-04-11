@@ -1,0 +1,1958 @@
+{
+	"info": {
+		"_postman_id": "68861896-d0bb-4fed-a04a-fdada7e56241",
+		"name": "Task Management System",
+		"description": "The Task Management System API description. The Task Management System API allows you to create, read, update, and delete tasks.  \n  \n\n<a href=\"/api-docs-json\">Download Swagger JSON</a>\n\n  \n  \n\n<a href=\"/api/V1/ws-test\">Open WebSocket Test Client</a>\n\n<h3>WebSocket Notifications</h3>\n\n<p>Connect to Socket.IO at: <a rel=\"noreferrer noopener nofollow\" href=\"http://localhost:3000/notifications\" target=\"_blank\" url=\"http://localhost:3000/notifications\"><code>http://localhost:3000/notifications</code></a></p>\n\n<h4>Available WebSocket Events</h4>\n\n<table><tbody><tr><th>Direction</th><th>Event Name</th><th>Description</th></tr><tr><td><div>Client → Server</div><div contenteditable=\"false\"><div><div><div></div></div></div><div></div></div></td><td><div><code>subscribeToNotifications</code></div><div contenteditable=\"false\"><div><div><div></div></div></div><div></div></div></td><td><div>Subscribe to receive notifications</div><div contenteditable=\"false\"><div><div><div></div></div></div><div></div></div></td></tr><tr><td><div>Client → Server</div><div contenteditable=\"false\"><div><div><div></div></div></div><div></div></div></td><td><div><code>getNotifications</code></div><div contenteditable=\"false\"><div><div><div></div></div></div><div></div></div></td><td><div>Retrieve all notifications for the user</div><div contenteditable=\"false\"><div><div><div></div></div></div><div></div></div></td></tr><tr><td><div>Client → Server</div><div contenteditable=\"false\"><div><div><div></div></div></div><div></div></div></td><td><div><code>markAsRead</code></div><div contenteditable=\"false\"><div><div><div></div></div></div><div></div></div></td><td><div>Mark a notification as read</div><div contenteditable=\"false\"><div><div><div></div></div></div><div></div></div></td></tr><tr><td><div>Server → Client</div><div contenteditable=\"false\"><div><div><div></div></div></div><div></div></div></td><td><div><code>NEW_TASK</code></div><div contenteditable=\"false\"><div><div><div></div></div></div><div></div></div></td><td><div>Notification when a new task is created</div><div contenteditable=\"false\"><div><div><div></div></div></div><div></div></div></td></tr><tr><td><div>Server → Client</div><div contenteditable=\"false\"><div><div><div></div></div></div><div></div></div></td><td><div><code>UPDATE_TASK</code></div><div contenteditable=\"false\"><div><div><div></div></div></div><div></div></div></td><td><div>Notification when a task is updated</div><div contenteditable=\"false\"><div><div><div></div></div></div><div></div></div></td></tr><tr><td><div>Server → Client</div><div contenteditable=\"false\"><div><div><div></div></div></div><div></div></div></td><td><div><code>DELETE_TASK</code></div><div contenteditable=\"false\"><div><div><div></div></div></div><div></div></div></td><td><div>Notification when a task is deleted</div><div contenteditable=\"false\"><div><div><div></div></div></div><div></div></div></td></tr><tr><td><div>Server → Client</div><div contenteditable=\"false\"><div><div><div></div></div></div><div></div></div></td><td><div><code>taskNotification</code></div><div contenteditable=\"false\"><div><div><div></div></div></div><div></div></div></td><td><div>General task notification channel</div><div contenteditable=\"false\"><div><div><div></div></div></div><div></div></div></td></tr><tr><td><div>Server → Client</div><div contenteditable=\"false\"><div><div><div></div></div></div><div></div></div></td><td><div><code>unreadCount</code></div><div contenteditable=\"false\"><div><div><div></div></div></div><div></div></div></td><td><div>Number of unread notifications</div><div contenteditable=\"false\"><div><div><div></div></div></div><div></div></div></td></tr></tbody></table>\n\n<p>Use the following code to connect with Socket.IO:</p>\n\n```\n// Include the Socket.IO client library// <script src=\"https://cdn.socket.io/4.5.4/socket.io.min.js\"></script>\nconst socket = io(\"http://localhost:3000/notifications\", {  auth: { token: \"YOUR_JWT_TOKEN\" },  transports: [\"websocket\"]});\nsocket.on(\"connect\", () => {  console.log(\"Connected to notification server\");\n  // Subscribe to notifications  socket.emit(\"subscribeToNotifications\", {});});\n// Listen for task notificationssocket.on(\"NEW_TASK\", (data) => {  console.log(\"New task notification:\", data);});\nsocket.on(\"unreadCount\", (data) => {  console.log(\"Unread notifications:\", data.count);});\n\n ```",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18310856",
+		"_collection_link": "https://no-team-9991.postman.co/workspace/Task-Test~289844d8-6d26-4dfe-b271-475c28cae9bd/collection/18310856-68861896-d0bb-4fed-a04a-fdada7e56241?action=share&source=collection_link&creator=18310856"
+	},
+	"item": [
+		{
+			"name": "api",
+			"item": [
+				{
+					"name": "V1",
+					"item": [
+						{
+							"name": "auth",
+							"item": [
+								{
+									"name": "register",
+									"item": [
+										{
+											"name": "Auth Controller create",
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "multipart/form-data"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "formdata",
+													"formdata": [
+														{
+															"key": "password",
+															"value": "<string>",
+															"description": "(Required) User password",
+															"type": "text"
+														},
+														{
+															"key": "firstName",
+															"value": "<string>",
+															"description": "(Required) User first name",
+															"type": "text"
+														},
+														{
+															"key": "lastName",
+															"value": "<string>",
+															"description": "(Required) User last name",
+															"type": "text"
+														},
+														{
+															"key": "roles",
+															"value": "USER",
+															"description": "(Required) User roles (This can only be one of ADMIN,USER)",
+															"type": "text"
+														},
+														{
+															"key": "email",
+															"value": "<string>",
+															"description": "User email",
+															"type": "text"
+														},
+														{
+															"key": "userName",
+															"value": "<string>",
+															"description": "Username",
+															"type": "text"
+														},
+														{
+															"key": "profilePhoto",
+															"description": "User profile photo",
+															"type": "file",
+															"src": []
+														}
+													]
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/V1/auth/register",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"V1",
+														"auth",
+														"register"
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "User Created",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "multipart/form-data"
+															},
+															{
+																"key": "Accept",
+																"value": "application/json"
+															}
+														],
+														"body": {
+															"mode": "formdata",
+															"formdata": [
+																{
+																	"key": "password",
+																	"value": "<string>",
+																	"description": "(Required) User password",
+																	"type": "text"
+																},
+																{
+																	"key": "firstName",
+																	"value": "<string>",
+																	"description": "(Required) User first name",
+																	"type": "text"
+																},
+																{
+																	"key": "lastName",
+																	"value": "<string>",
+																	"description": "(Required) User last name",
+																	"type": "text"
+																},
+																{
+																	"key": "roles",
+																	"value": "USER",
+																	"description": "(Required) User roles (This can only be one of ADMIN,USER)",
+																	"type": "text"
+																},
+																{
+																	"key": "email",
+																	"value": "<string>",
+																	"description": "User email",
+																	"type": "text"
+																},
+																{
+																	"key": "userName",
+																	"value": "<string>",
+																	"description": "Username",
+																	"type": "text"
+																},
+																{
+																	"key": "profilePhoto",
+																	"description": "User profile photo",
+																	"type": "file",
+																	"src": []
+																}
+															]
+														},
+														"url": {
+															"raw": "{{baseUrl}}/api/V1/auth/register",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"V1",
+																"auth",
+																"register"
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"id\": \"<string>\",\n  \"email\": \"<string>\",\n  \"isActive\": \"<boolean>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"userName\": \"<string>\",\n  \"roles\": [\n    \"ADMIN\",\n    \"USER\"\n  ],\n  \"profilePhoto\": \"<string>\",\n  \"permissions\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+												},
+												{
+													"name": "Bad Request",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "multipart/form-data"
+															}
+														],
+														"body": {
+															"mode": "formdata",
+															"formdata": [
+																{
+																	"key": "password",
+																	"value": "<string>",
+																	"description": "(Required) User password",
+																	"type": "text"
+																},
+																{
+																	"key": "firstName",
+																	"value": "<string>",
+																	"description": "(Required) User first name",
+																	"type": "text"
+																},
+																{
+																	"key": "lastName",
+																	"value": "<string>",
+																	"description": "(Required) User last name",
+																	"type": "text"
+																},
+																{
+																	"key": "roles",
+																	"value": "USER",
+																	"description": "(Required) User roles (This can only be one of ADMIN,USER)",
+																	"type": "text"
+																},
+																{
+																	"key": "email",
+																	"value": "<string>",
+																	"description": "User email",
+																	"type": "text"
+																},
+																{
+																	"key": "userName",
+																	"value": "<string>",
+																	"description": "Username",
+																	"type": "text"
+																},
+																{
+																	"key": "profilePhoto",
+																	"description": "User profile photo",
+																	"type": "file",
+																	"src": []
+																}
+															]
+														},
+														"url": {
+															"raw": "{{baseUrl}}/api/V1/auth/register",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"V1",
+																"auth",
+																"register"
+															]
+														}
+													},
+													"status": "Bad Request",
+													"code": 400,
+													"_postman_previewlanguage": "text",
+													"header": [],
+													"cookie": [],
+													"body": ""
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "login",
+									"item": [
+										{
+											"name": "Auth Controller login",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"// Save the accessToken in the environment variable BearerToken\r",
+															"pm.environment.set('bearerToken', pm.response.json().accessToken);\r",
+															""
+														],
+														"type": "text/javascript",
+														"packages": {}
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"password\": \"Password123\",\n  \"email\": \"user@example.com\"\n  // ,\"userName\": \"<string>\" // its Optional\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/V1/auth/login",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"V1",
+														"auth",
+														"login"
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "Login Successful",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															},
+															{
+																"key": "Accept",
+																"value": "application/json"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"password\": \"<string>\",\n  \"email\": \"<string>\",\n  \"userName\": \"<string>\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{baseUrl}}/api/V1/auth/login",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"V1",
+																"auth",
+																"login"
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"id\": \"<string>\",\n  \"email\": \"<string>\",\n  \"isActive\": \"<boolean>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"userName\": \"<string>\",\n  \"roles\": [\n    \"ADMIN\",\n    \"USER\"\n  ],\n  \"profilePhoto\": \"<string>\",\n  \"permissions\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+												},
+												{
+													"name": "Bad Request",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"password\": \"<string>\",\n  \"email\": \"<string>\",\n  \"userName\": \"<string>\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{baseUrl}}/api/V1/auth/login",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"V1",
+																"auth",
+																"login"
+															]
+														}
+													},
+													"status": "Bad Request",
+													"code": 400,
+													"_postman_previewlanguage": "text",
+													"header": [],
+													"cookie": [],
+													"body": ""
+												},
+												{
+													"name": "Unauthorized",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"password\": \"<string>\",\n  \"email\": \"<string>\",\n  \"userName\": \"<string>\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{baseUrl}}/api/V1/auth/login",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"V1",
+																"auth",
+																"login"
+															]
+														}
+													},
+													"status": "Unauthorized",
+													"code": 401,
+													"_postman_previewlanguage": "text",
+													"header": [],
+													"cookie": [],
+													"body": ""
+												},
+												{
+													"name": "Forbidden",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"password\": \"<string>\",\n  \"email\": \"<string>\",\n  \"userName\": \"<string>\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{baseUrl}}/api/V1/auth/login",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"V1",
+																"auth",
+																"login"
+															]
+														}
+													},
+													"status": "Forbidden",
+													"code": 403,
+													"_postman_previewlanguage": "text",
+													"header": [],
+													"cookie": [],
+													"body": ""
+												},
+												{
+													"name": "User Not Found",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"password\": \"<string>\",\n  \"email\": \"<string>\",\n  \"userName\": \"<string>\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{baseUrl}}/api/V1/auth/login",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"V1",
+																"auth",
+																"login"
+															]
+														}
+													},
+													"status": "Not Found",
+													"code": 404,
+													"_postman_previewlanguage": "text",
+													"header": [],
+													"cookie": [],
+													"body": ""
+												},
+												{
+													"name": "Conflict",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"password\": \"<string>\",\n  \"email\": \"<string>\",\n  \"userName\": \"<string>\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{baseUrl}}/api/V1/auth/login",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"V1",
+																"auth",
+																"login"
+															]
+														}
+													},
+													"status": "Conflict",
+													"code": 409,
+													"_postman_previewlanguage": "text",
+													"header": [],
+													"cookie": [],
+													"body": ""
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "refresh",
+									"item": [
+										{
+											"name": "Auth Controller refresh Token",
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"refreshToken\": \"<string>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/V1/auth/refresh",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"V1",
+														"auth",
+														"refresh"
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "Token Refreshed",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"refreshToken\": \"<string>\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{baseUrl}}/api/V1/auth/refresh",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"V1",
+																"auth",
+																"refresh"
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "text",
+													"header": [],
+													"cookie": [],
+													"body": ""
+												},
+												{
+													"name": "Unauthorized",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"refreshToken\": \"<string>\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{baseUrl}}/api/V1/auth/refresh",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"V1",
+																"auth",
+																"refresh"
+															]
+														}
+													},
+													"status": "Unauthorized",
+													"code": 401,
+													"_postman_previewlanguage": "text",
+													"header": [],
+													"cookie": [],
+													"body": ""
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "logout",
+									"item": [
+										{
+											"name": "Auth Controller logout",
+											"request": {
+												"auth": {
+													"type": "bearer",
+													"bearer": [
+														{
+															"key": "token",
+															"value": "{{bearerToken}}",
+															"type": "string"
+														}
+													]
+												},
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/api/V1/auth/logout",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"V1",
+														"auth",
+														"logout"
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "Logout Successful",
+													"originalRequest": {
+														"method": "DELETE",
+														"header": [
+															{
+																"key": "Authorization",
+																"value": "Bearer <token>",
+																"description": "Added as a part of security scheme: bearer"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/api/V1/auth/logout",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"V1",
+																"auth",
+																"logout"
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "text",
+													"header": [],
+													"cookie": [],
+													"body": ""
+												},
+												{
+													"name": "Unauthorized",
+													"originalRequest": {
+														"method": "DELETE",
+														"header": [
+															{
+																"key": "Authorization",
+																"value": "Bearer <token>",
+																"description": "Added as a part of security scheme: bearer"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/api/V1/auth/logout",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"V1",
+																"auth",
+																"logout"
+															]
+														}
+													},
+													"status": "Unauthorized",
+													"code": 401,
+													"_postman_previewlanguage": "text",
+													"header": [],
+													"cookie": [],
+													"body": ""
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "user",
+									"item": [
+										{
+											"name": "Auth Controller update User",
+											"request": {
+												"auth": {
+													"type": "bearer",
+													"bearer": [
+														{
+															"key": "token",
+															"value": "{{bearerToken}}",
+															"type": "string"
+														}
+													]
+												},
+												"method": "PATCH",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "multipart/form-data"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "formdata",
+													"formdata": [
+														{
+															"key": "email",
+															"value": "<string>",
+															"description": "User email",
+															"type": "text"
+														},
+														{
+															"key": "password",
+															"value": "<string>",
+															"description": "User password",
+															"type": "text"
+														},
+														{
+															"key": "firstName",
+															"value": "<string>",
+															"description": "User first name",
+															"type": "text"
+														},
+														{
+															"key": "lastName",
+															"value": "<string>",
+															"description": "User last name",
+															"type": "text"
+														},
+														{
+															"key": "userName",
+															"value": "<string>",
+															"description": "Username",
+															"type": "text"
+														},
+														{
+															"key": "profilePhoto",
+															"description": "User profile photo",
+															"type": "file",
+															"src": []
+														},
+														{
+															"key": "roles",
+															"value": "USER",
+															"description": "User roles (This can only be one of ADMIN,USER)",
+															"type": "text"
+														}
+													]
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/V1/auth/user",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"V1",
+														"auth",
+														"user"
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "User Updated",
+													"originalRequest": {
+														"method": "PATCH",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "multipart/form-data"
+															},
+															{
+																"key": "Accept",
+																"value": "application/json"
+															},
+															{
+																"key": "Authorization",
+																"value": "Bearer <token>",
+																"description": "Added as a part of security scheme: bearer"
+															}
+														],
+														"body": {
+															"mode": "formdata",
+															"formdata": [
+																{
+																	"key": "email",
+																	"value": "<string>",
+																	"description": "User email",
+																	"type": "text"
+																},
+																{
+																	"key": "password",
+																	"value": "<string>",
+																	"description": "User password",
+																	"type": "text"
+																},
+																{
+																	"key": "firstName",
+																	"value": "<string>",
+																	"description": "User first name",
+																	"type": "text"
+																},
+																{
+																	"key": "lastName",
+																	"value": "<string>",
+																	"description": "User last name",
+																	"type": "text"
+																},
+																{
+																	"key": "userName",
+																	"value": "<string>",
+																	"description": "Username",
+																	"type": "text"
+																},
+																{
+																	"key": "profilePhoto",
+																	"description": "User profile photo",
+																	"type": "file",
+																	"src": []
+																},
+																{
+																	"key": "roles",
+																	"value": "USER",
+																	"description": "User roles (This can only be one of ADMIN,USER)",
+																	"type": "text"
+																}
+															]
+														},
+														"url": {
+															"raw": "{{baseUrl}}/api/V1/auth/user",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"V1",
+																"auth",
+																"user"
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"id\": \"<string>\",\n  \"email\": \"<string>\",\n  \"isActive\": \"<boolean>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"userName\": \"<string>\",\n  \"roles\": [\n    \"ADMIN\",\n    \"USER\"\n  ],\n  \"profilePhoto\": \"<string>\",\n  \"permissions\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+												},
+												{
+													"name": "Bad Request",
+													"originalRequest": {
+														"method": "PATCH",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "multipart/form-data"
+															},
+															{
+																"key": "Authorization",
+																"value": "Bearer <token>",
+																"description": "Added as a part of security scheme: bearer"
+															}
+														],
+														"body": {
+															"mode": "formdata",
+															"formdata": [
+																{
+																	"key": "email",
+																	"value": "<string>",
+																	"description": "User email",
+																	"type": "text"
+																},
+																{
+																	"key": "password",
+																	"value": "<string>",
+																	"description": "User password",
+																	"type": "text"
+																},
+																{
+																	"key": "firstName",
+																	"value": "<string>",
+																	"description": "User first name",
+																	"type": "text"
+																},
+																{
+																	"key": "lastName",
+																	"value": "<string>",
+																	"description": "User last name",
+																	"type": "text"
+																},
+																{
+																	"key": "userName",
+																	"value": "<string>",
+																	"description": "Username",
+																	"type": "text"
+																},
+																{
+																	"key": "profilePhoto",
+																	"description": "User profile photo",
+																	"type": "file",
+																	"src": []
+																},
+																{
+																	"key": "roles",
+																	"value": "USER",
+																	"description": "User roles (This can only be one of ADMIN,USER)",
+																	"type": "text"
+																}
+															]
+														},
+														"url": {
+															"raw": "{{baseUrl}}/api/V1/auth/user",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"V1",
+																"auth",
+																"user"
+															]
+														}
+													},
+													"status": "Bad Request",
+													"code": 400,
+													"_postman_previewlanguage": "text",
+													"header": [],
+													"cookie": [],
+													"body": ""
+												},
+												{
+													"name": "Unauthorized",
+													"originalRequest": {
+														"method": "PATCH",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "multipart/form-data"
+															},
+															{
+																"key": "Authorization",
+																"value": "Bearer <token>",
+																"description": "Added as a part of security scheme: bearer"
+															}
+														],
+														"body": {
+															"mode": "formdata",
+															"formdata": [
+																{
+																	"key": "email",
+																	"value": "<string>",
+																	"description": "User email",
+																	"type": "text"
+																},
+																{
+																	"key": "password",
+																	"value": "<string>",
+																	"description": "User password",
+																	"type": "text"
+																},
+																{
+																	"key": "firstName",
+																	"value": "<string>",
+																	"description": "User first name",
+																	"type": "text"
+																},
+																{
+																	"key": "lastName",
+																	"value": "<string>",
+																	"description": "User last name",
+																	"type": "text"
+																},
+																{
+																	"key": "userName",
+																	"value": "<string>",
+																	"description": "Username",
+																	"type": "text"
+																},
+																{
+																	"key": "profilePhoto",
+																	"description": "User profile photo",
+																	"type": "file",
+																	"src": []
+																},
+																{
+																	"key": "roles",
+																	"value": "USER",
+																	"description": "User roles (This can only be one of ADMIN,USER)",
+																	"type": "text"
+																}
+															]
+														},
+														"url": {
+															"raw": "{{baseUrl}}/api/V1/auth/user",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"V1",
+																"auth",
+																"user"
+															]
+														}
+													},
+													"status": "Unauthorized",
+													"code": 401,
+													"_postman_previewlanguage": "text",
+													"header": [],
+													"cookie": [],
+													"body": ""
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "profile",
+									"item": [
+										{
+											"name": "Auth Controller get Profile",
+											"request": {
+												"auth": {
+													"type": "bearer",
+													"bearer": [
+														{
+															"key": "token",
+															"value": "{{bearerToken}}",
+															"type": "string"
+														}
+													]
+												},
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/V1/auth/profile",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"V1",
+														"auth",
+														"profile"
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "User Profile",
+													"originalRequest": {
+														"method": "GET",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															},
+															{
+																"key": "Authorization",
+																"value": "Bearer <token>",
+																"description": "Added as a part of security scheme: bearer"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/api/V1/auth/profile",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"V1",
+																"auth",
+																"profile"
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"id\": \"<string>\",\n  \"email\": \"<string>\",\n  \"isActive\": \"<boolean>\",\n  \"firstName\": \"<string>\",\n  \"lastName\": \"<string>\",\n  \"userName\": \"<string>\",\n  \"roles\": [\n    \"ADMIN\",\n    \"USER\"\n  ],\n  \"profilePhoto\": \"<string>\",\n  \"permissions\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}"
+												},
+												{
+													"name": "Unauthorized",
+													"originalRequest": {
+														"method": "GET",
+														"header": [
+															{
+																"key": "Authorization",
+																"value": "Bearer <token>",
+																"description": "Added as a part of security scheme: bearer"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/api/V1/auth/profile",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"V1",
+																"auth",
+																"profile"
+															]
+														}
+													},
+													"status": "Unauthorized",
+													"code": 401,
+													"_postman_previewlanguage": "text",
+													"header": [],
+													"cookie": [],
+													"body": ""
+												}
+											]
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "ws-test",
+							"item": [
+								{
+									"name": "WebSocket Test Client",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/api/V1/ws-test",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"V1",
+												"ws-test"
+											]
+										},
+										"description": "<a href=\"/api/V1/ws-test\" target=\"_blank\" class=\"swagger-ui-btn\">Open WebSocket Test Client in New Tab</a><style>.swagger-ui-btn{background-color: #49cc90; color: white; padding: 8px 16px; border-radius: 4px; text-decoration: none; font-weight: bold; display: inline-block; margin-top: 10px;}</style>"
+									},
+									"response": [
+										{
+											"name": "Untitled Response",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/api/V1/ws-test",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"V1",
+														"ws-test"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [],
+											"cookie": [],
+											"body": ""
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "tasks",
+							"item": [
+								{
+									"name": "create",
+									"item": [
+										{
+											"name": "Create a new task",
+											"request": {
+												"auth": {
+													"type": "bearer",
+													"bearer": [
+														{
+															"key": "token",
+															"value": "{{bearerToken}}",
+															"type": "string"
+														}
+													]
+												},
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "multipart/form-data"
+													}
+												],
+												"body": {
+													"mode": "formdata",
+													"formdata": [
+														{
+															"key": "title",
+															"value": "<string>",
+															"description": "(Required) Title of the task",
+															"type": "text"
+														},
+														{
+															"key": "description",
+															"value": "<string>",
+															"description": "(Required) Description of the task",
+															"type": "text"
+														},
+														{
+															"key": "status",
+															"value": "IN_PROGRESS",
+															"description": "(Required) Status of the task (This can only be one of TODO,IN_PROGRESS,DONE)",
+															"type": "text"
+														},
+														{
+															"key": "dueDate",
+															"value": "<string>",
+															"description": "Due date of the task in ISO format",
+															"type": "text"
+														},
+														{
+															"key": "attachments",
+															"value": "<binary>,<binary>",
+															"description": "Array of file attachments for the task",
+															"type": "text"
+														}
+													]
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/V1/tasks/create",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"V1",
+														"tasks",
+														"create"
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "Untitled Response",
+													"originalRequest": {
+														"method": "POST",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "multipart/form-data"
+															},
+															{
+																"key": "Authorization",
+																"value": "Bearer <token>",
+																"description": "Added as a part of security scheme: bearer"
+															}
+														],
+														"body": {
+															"mode": "formdata",
+															"formdata": [
+																{
+																	"key": "title",
+																	"value": "<string>",
+																	"description": "(Required) Title of the task",
+																	"type": "text"
+																},
+																{
+																	"key": "description",
+																	"value": "<string>",
+																	"description": "(Required) Description of the task",
+																	"type": "text"
+																},
+																{
+																	"key": "status",
+																	"value": "IN_PROGRESS",
+																	"description": "(Required) Status of the task (This can only be one of TODO,IN_PROGRESS,DONE)",
+																	"type": "text"
+																},
+																{
+																	"key": "dueDate",
+																	"value": "<string>",
+																	"description": "Due date of the task in ISO format",
+																	"type": "text"
+																},
+																{
+																	"key": "attachments",
+																	"value": "<binary>,<binary>",
+																	"description": "Array of file attachments for the task",
+																	"type": "text"
+																}
+															]
+														},
+														"url": {
+															"raw": "{{baseUrl}}/api/V1/tasks/create",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"V1",
+																"tasks",
+																"create"
+															]
+														}
+													},
+													"status": "Created",
+													"code": 201,
+													"_postman_previewlanguage": "text",
+													"header": [],
+													"cookie": [],
+													"body": ""
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "all",
+									"item": [
+										{
+											"name": "Get all tasks with pagination",
+											"request": {
+												"auth": {
+													"type": "bearer",
+													"bearer": [
+														{
+															"key": "token",
+															"value": "{{bearerToken}}",
+															"type": "string"
+														}
+													]
+												},
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/api/V1/tasks/all?limit=10&page=1",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"V1",
+														"tasks",
+														"all"
+													],
+													"query": [
+														{
+															"key": "limit",
+															"value": "10"
+														},
+														{
+															"key": "page",
+															"value": "1"
+														}
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "Untitled Response",
+													"originalRequest": {
+														"method": "GET",
+														"header": [
+															{
+																"key": "Authorization",
+																"value": "Bearer <token>",
+																"description": "Added as a part of security scheme: bearer"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/api/V1/tasks/all?limit=<number>&page=<number>",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"V1",
+																"tasks",
+																"all"
+															],
+															"query": [
+																{
+																	"key": "limit",
+																	"value": "<number>"
+																},
+																{
+																	"key": "page",
+																	"value": "<number>"
+																}
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "text",
+													"header": [],
+													"cookie": [],
+													"body": ""
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "get",
+									"item": [
+										{
+											"name": "{id}",
+											"item": [
+												{
+													"name": "Get a task by ID",
+													"request": {
+														"auth": {
+															"type": "bearer",
+															"bearer": [
+																{
+																	"key": "token",
+																	"value": "{{bearerToken}}",
+																	"type": "string"
+																}
+															]
+														},
+														"method": "GET",
+														"header": [],
+														"url": {
+															"raw": "{{baseUrl}}/api/V1/tasks/get/:id",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"V1",
+																"tasks",
+																"get",
+																":id"
+															],
+															"variable": [
+																{
+																	"key": "id",
+																	"value": "<string>",
+																	"description": "(Required) "
+																}
+															]
+														}
+													},
+													"response": [
+														{
+															"name": "Untitled Response",
+															"originalRequest": {
+																"method": "GET",
+																"header": [
+																	{
+																		"key": "Authorization",
+																		"value": "Bearer <token>",
+																		"description": "Added as a part of security scheme: bearer"
+																	}
+																],
+																"url": {
+																	"raw": "{{baseUrl}}/api/V1/tasks/get/:id",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"api",
+																		"V1",
+																		"tasks",
+																		"get",
+																		":id"
+																	],
+																	"variable": [
+																		{
+																			"key": "id"
+																		}
+																	]
+																}
+															},
+															"status": "OK",
+															"code": 200,
+															"_postman_previewlanguage": "text",
+															"header": [],
+															"cookie": [],
+															"body": ""
+														}
+													]
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "update",
+									"item": [
+										{
+											"name": "{id}",
+											"item": [
+												{
+													"name": "Update a task by ID",
+													"request": {
+														"auth": {
+															"type": "bearer",
+															"bearer": [
+																{
+																	"key": "token",
+																	"value": "{{bearerToken}}",
+																	"type": "string"
+																}
+															]
+														},
+														"method": "PATCH",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "multipart/form-data"
+															}
+														],
+														"body": {
+															"mode": "formdata",
+															"formdata": [
+																{
+																	"key": "title",
+																	"value": "<string>",
+																	"description": "Title of the task",
+																	"type": "text"
+																},
+																{
+																	"key": "description",
+																	"value": "<string>",
+																	"description": "Description of the task",
+																	"type": "text"
+																},
+																{
+																	"key": "status",
+																	"value": "IN_PROGRESS",
+																	"description": "Status of the task (This can only be one of TODO,IN_PROGRESS,DONE)",
+																	"type": "text"
+																},
+																{
+																	"key": "dueDate",
+																	"value": "<string>",
+																	"description": "Due date of the task in ISO format",
+																	"type": "text"
+																},
+																{
+																	"key": "attachments",
+																	"value": "<binary>,<binary>",
+																	"description": "Array of file attachments for the task",
+																	"type": "text"
+																}
+															]
+														},
+														"url": {
+															"raw": "{{baseUrl}}/api/V1/tasks/update/:id",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"V1",
+																"tasks",
+																"update",
+																":id"
+															],
+															"variable": [
+																{
+																	"key": "id",
+																	"value": "<string>",
+																	"description": "(Required) "
+																}
+															]
+														}
+													},
+													"response": [
+														{
+															"name": "Untitled Response",
+															"originalRequest": {
+																"method": "PATCH",
+																"header": [
+																	{
+																		"key": "Content-Type",
+																		"value": "multipart/form-data"
+																	},
+																	{
+																		"key": "Authorization",
+																		"value": "Bearer <token>",
+																		"description": "Added as a part of security scheme: bearer"
+																	}
+																],
+																"body": {
+																	"mode": "formdata",
+																	"formdata": [
+																		{
+																			"key": "title",
+																			"value": "<string>",
+																			"description": "Title of the task",
+																			"type": "text"
+																		},
+																		{
+																			"key": "description",
+																			"value": "<string>",
+																			"description": "Description of the task",
+																			"type": "text"
+																		},
+																		{
+																			"key": "status",
+																			"value": "IN_PROGRESS",
+																			"description": "Status of the task (This can only be one of TODO,IN_PROGRESS,DONE)",
+																			"type": "text"
+																		},
+																		{
+																			"key": "dueDate",
+																			"value": "<string>",
+																			"description": "Due date of the task in ISO format",
+																			"type": "text"
+																		},
+																		{
+																			"key": "attachments",
+																			"value": "<binary>,<binary>",
+																			"description": "Array of file attachments for the task",
+																			"type": "text"
+																		}
+																	]
+																},
+																"url": {
+																	"raw": "{{baseUrl}}/api/V1/tasks/update/:id",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"api",
+																		"V1",
+																		"tasks",
+																		"update",
+																		":id"
+																	],
+																	"variable": [
+																		{
+																			"key": "id"
+																		}
+																	]
+																}
+															},
+															"status": "OK",
+															"code": 200,
+															"_postman_previewlanguage": "text",
+															"header": [],
+															"cookie": [],
+															"body": ""
+														}
+													]
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "delete",
+									"item": [
+										{
+											"name": "{id}",
+											"item": [
+												{
+													"name": "Delete a task by ID",
+													"request": {
+														"auth": {
+															"type": "bearer",
+															"bearer": [
+																{
+																	"key": "token",
+																	"value": "{{bearerToken}}",
+																	"type": "string"
+																}
+															]
+														},
+														"method": "DELETE",
+														"header": [],
+														"url": {
+															"raw": "{{baseUrl}}/api/V1/tasks/delete/:id",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"V1",
+																"tasks",
+																"delete",
+																":id"
+															],
+															"variable": [
+																{
+																	"key": "id",
+																	"value": "<string>",
+																	"description": "(Required) "
+																}
+															]
+														}
+													},
+													"response": [
+														{
+															"name": "Untitled Response",
+															"originalRequest": {
+																"method": "DELETE",
+																"header": [
+																	{
+																		"key": "Authorization",
+																		"value": "Bearer <token>",
+																		"description": "Added as a part of security scheme: bearer"
+																	}
+																],
+																"url": {
+																	"raw": "{{baseUrl}}/api/V1/tasks/delete/:id",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"api",
+																		"V1",
+																		"tasks",
+																		"delete",
+																		":id"
+																	],
+																	"variable": [
+																		{
+																			"key": "id"
+																		}
+																	]
+																}
+															},
+															"status": "OK",
+															"code": 200,
+															"_postman_previewlanguage": "text",
+															"header": [],
+															"cookie": [],
+															"body": ""
+														}
+													]
+												}
+											]
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "App Controller get Hello",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/api/V1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"V1"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Untitled Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/api/V1",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"V1"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "/"
+		},
+		{
+			"key": "bearerToken",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

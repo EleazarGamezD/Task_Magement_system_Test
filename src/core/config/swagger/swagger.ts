@@ -18,19 +18,41 @@ export function setupSwagger(app: INestApplication) {
     .setDescription(
       'The Task Management System API description. The Task Management System API allows you to create, read, update, and delete tasks.<br><br>' +
         '<a href="/api-docs-json" target="_blank" style="background-color: #49cc90; color: white; padding: 8px 16px; border-radius: 4px; text-decoration: none; font-weight: bold;">Download Swagger JSON</a>' +
+        '<br><br><a href="/api/V1/ws-test" target="_blank" style="background-color: #6366f1; color: white; padding: 8px 16px; border-radius: 4px; text-decoration: none; font-weight: bold;">Open WebSocket Test Client</a>' +
         '<h3>WebSocket Notifications</h3>' +
-        '<p>Connect to WebSocket at: <code>ws://localhost:3000/notifications</code></p>' +
-        '<p>Use the following code to connect:</p>' +
-        "<pre><code>const socket = new WebSocket('ws://localhost:3000/notifications');\n" +
-        'socket.onopen = () => {\n' +
-        "  console.log('WebSocket connection opened');\n" +
-        '};\n' +
-        'socket.onmessage = (event) => {\n' +
-        '  console.log(event.data);\n' +
-        '};\n' +
-        'socket.onclose = () => {\n' +
-        "  console.log('WebSocket connection closed');\n" +
-        '};</code></pre>',
+        '<p>Connect to Socket.IO at: <code>http://localhost:3000/notifications</code></p>' +
+        '<h4>Available WebSocket Events</h4>' +
+        '<table style="width:100%; border-collapse: collapse; margin-bottom: 15px;">' +
+        '<tr style="background-color: #f8f9fa;"><th style="padding: 8px; text-align: left; border: 1px solid #dee2e6;">Direction</th><th style="padding: 8px; text-align: left; border: 1px solid #dee2e6;">Event Name</th><th style="padding: 8px; text-align: left; border: 1px solid #dee2e6;">Description</th></tr>' +
+        '<tr><td style="padding: 8px; border: 1px solid #dee2e6;">Client → Server</td><td style="padding: 8px; border: 1px solid #dee2e6;"><code>subscribeToNotifications</code></td><td style="padding: 8px; border: 1px solid #dee2e6;">Subscribe to receive notifications</td></tr>' +
+        '<tr><td style="padding: 8px; border: 1px solid #dee2e6;">Client → Server</td><td style="padding: 8px; border: 1px solid #dee2e6;"><code>getNotifications</code></td><td style="padding: 8px; border: 1px solid #dee2e6;">Retrieve all notifications for the user</td></tr>' +
+        '<tr><td style="padding: 8px; border: 1px solid #dee2e6;">Client → Server</td><td style="padding: 8px; border: 1px solid #dee2e6;"><code>markAsRead</code></td><td style="padding: 8px; border: 1px solid #dee2e6;">Mark a notification as read</td></tr>' +
+        '<tr><td style="padding: 8px; border: 1px solid #dee2e6;">Server → Client</td><td style="padding: 8px; border: 1px solid #dee2e6;"><code>NEW_TASK</code></td><td style="padding: 8px; border: 1px solid #dee2e6;">Notification when a new task is created</td></tr>' +
+        '<tr><td style="padding: 8px; border: 1px solid #dee2e6;">Server → Client</td><td style="padding: 8px; border: 1px solid #dee2e6;"><code>UPDATE_TASK</code></td><td style="padding: 8px; border: 1px solid #dee2e6;">Notification when a task is updated</td></tr>' +
+        '<tr><td style="padding: 8px; border: 1px solid #dee2e6;">Server → Client</td><td style="padding: 8px; border: 1px solid #dee2e6;"><code>DELETE_TASK</code></td><td style="padding: 8px; border: 1px solid #dee2e6;">Notification when a task is deleted</td></tr>' +
+        '<tr><td style="padding: 8px; border: 1px solid #dee2e6;">Server → Client</td><td style="padding: 8px; border: 1px solid #dee2e6;"><code>taskNotification</code></td><td style="padding: 8px; border: 1px solid #dee2e6;">General task notification channel</td></tr>' +
+        '<tr><td style="padding: 8px; border: 1px solid #dee2e6;">Server → Client</td><td style="padding: 8px; border: 1px solid #dee2e6;"><code>unreadCount</code></td><td style="padding: 8px; border: 1px solid #dee2e6;">Number of unread notifications</td></tr>' +
+        '</table>' +
+        '<p>Use the following code to connect with Socket.IO:</p>' +
+        '<pre><code>// Include the Socket.IO client library\n' +
+        '// &lt;script src="https://cdn.socket.io/4.5.4/socket.io.min.js">&lt;/script>\n\n' +
+        'const socket = io("http://localhost:3000/notifications", {\n' +
+        '  auth: { token: "YOUR_JWT_TOKEN" },\n' +
+        '  transports: ["websocket"]\n' +
+        '});\n\n' +
+        'socket.on("connect", () => {\n' +
+        '  console.log("Connected to notification server");\n' +
+        '  \n' +
+        '  // Subscribe to notifications\n' +
+        '  socket.emit("subscribeToNotifications", {});\n' +
+        '});\n\n' +
+        '// Listen for task notifications\n' +
+        'socket.on("NEW_TASK", (data) => {\n' +
+        '  console.log("New task notification:", data);\n' +
+        '});\n\n' +
+        'socket.on("unreadCount", (data) => {\n' +
+        '  console.log("Unread notifications:", data.count);\n' +
+        '});</code></pre>',
     )
     .setVersion(`${process.env.API_VERSION}`)
     .addTag('tasks', 'Operations related to tasks')
