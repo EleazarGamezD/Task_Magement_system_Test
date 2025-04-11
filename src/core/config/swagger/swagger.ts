@@ -20,17 +20,17 @@ export function setupSwagger(app: INestApplication) {
         '<a href="/api-docs-json" target="_blank" style="background-color: #49cc90; color: white; padding: 8px 16px; border-radius: 4px; text-decoration: none; font-weight: bold;">Download Swagger JSON</a>' +
         '<h3>WebSocket Notifications</h3>' +
         '<p>Connect to WebSocket at: <code>ws://localhost:3000/notifications</code></p>' +
-        '<table>' +
-        '<tr><th>Event</th><th>Description</th><th>Payload</th></tr>' +
-        '<tr><td>taskNotification</td><td>Emitted when a task is created, updated or deleted</td><td>Notification object</td></tr>' +
-        '<tr><td>unreadCount</td><td>Emitted with the number of unread notifications</td><td>{ count: number }</td></tr>' +
-        '</table>' +
-        '<h4>Client Methods</h4>' +
-        '<table>' +
-        '<tr><th>Method</th><th>Description</th><th>Payload</th></tr>' +
-        '<tr><td>markNotificationRead</td><td>Mark a notification as read</td><td>{ notificationId: string }</td></tr>' +
-        '<tr><td>getNotifications</td><td>Get all notifications for current user</td><td>{}</td></tr>' +
-        '</table>',
+        '<p>Use the following code to connect:</p>' +
+        "<pre><code>const socket = new WebSocket('ws://localhost:3000/notifications');\n" +
+        'socket.onopen = () => {\n' +
+        "  console.log('WebSocket connection opened');\n" +
+        '};\n' +
+        'socket.onmessage = (event) => {\n' +
+        '  console.log(event.data);\n' +
+        '};\n' +
+        'socket.onclose = () => {\n' +
+        "  console.log('WebSocket connection closed');\n" +
+        '};</code></pre>',
     )
     .setVersion(`${process.env.API_VERSION}`)
     .addTag('tasks', 'Operations related to tasks')
@@ -58,5 +58,5 @@ export function setupSwagger(app: INestApplication) {
     ],
   };
 
-  SwaggerModule.setup(`/`, app, document, swaggerCustomOptions);
+  SwaggerModule.setup(`/api-docs`, app, document, swaggerCustomOptions);
 }

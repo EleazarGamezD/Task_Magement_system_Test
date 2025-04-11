@@ -50,6 +50,9 @@ export class CreateNotificationDto {
     example: 'A new task has been assigned to you',
   })
   message: string;
+
+  @IsOptional()
+  count?: number;
 }
 
 export class MarkNotificationReadDto {

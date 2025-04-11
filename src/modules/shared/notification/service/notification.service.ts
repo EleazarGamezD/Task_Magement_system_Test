@@ -1,28 +1,53 @@
 import { NotificationTitle, NotificationType } from '@core/enums/notifications';
 import { CustomException } from '@core/exceptions-custom/custom-exception';
+import { NotificationEventData } from '@core/interfaces/notification.interface';
 import { ValidRoles } from '@enums/valid-roles';
 import { NotificationRepository } from '@modules/shared/database/shared/repositories/notification.repository';
-import { TaskRepository } from '@modules/shared/database/shared/repositories/task.repository';
 import { UserRepository } from '@modules/shared/database/shared/repositories/user.repository';
 import { TaskNotification } from '@modules/shared/database/shared/schemas/notification.schema';
 import { Task } from '@modules/shared/database/shared/schemas/task.schema';
 import { User } from '@modules/shared/database/shared/schemas/user.schema';
 import { Injectable, Logger } from '@nestjs/common';
-import { In } from 'typeorm';
 import {
   CreateNotificationDto,
   MarkNotificationReadDto,
 } from '../dto/create-notification.dto';
+import { NotificationGateway } from '../gateway/notification.gateway';
 
 @Injectable()
 export class NotificationService {
   private readonly logger = new Logger(NotificationService.name);
+  private static instance: NotificationService;
 
   constructor(
     private readonly notificationRepository: NotificationRepository,
     private readonly userRepository: UserRepository,
-    private readonly taskRepository: TaskRepository,
-  ) {}
+  ) {
+    NotificationService.instance = this;
+  }
+
+  static getInstance(): NotificationService {
+    return NotificationService.instance;
+  }
+
+  private get notificationGateway(): NotificationGateway {
+    return NotificationGateway.getInstance();
+  }
+
+  // Add this helper method to your NotificationService
+  private async ensureGatewayReady(maxWaitMs = 2000): Promise<boolean> {
+    const startTime = Date.now();
+
+    while (Date.now() - startTime < maxWaitMs) {
+      if (NotificationGateway.isReady()) {
+        return true;
+      }
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    }
+
+    this.logger.warn(`Gateway not ready after ${maxWaitMs}ms wait`);
+    return false;
+  }
 
   // Create a single notification
   async create(
@@ -43,27 +68,36 @@ export class NotificationService {
   // Notify users about a new task
   async notifyNewTask(task: Task): Promise<void> {
     try {
-      // Get all users to notify
-      const users = await this.userRepository.find();
+      // Obtener usuario destinatario de la tarea (asumiendo que task tiene un assignedTo)
+      const assignedUserId = task.userId;
 
-      // Create notifications for each user
-      const notifications = users.map((user) => {
-        return this.notificationRepository.create({
-          destinationUserId: user.id,
-          taskId: task.id,
-          type: NotificationType.NEW_TASK,
-          title: NotificationTitle.NEW_TASK,
-          message: `A new task "${task.title}" has been created`,
-          read: false,
-        });
+      // Crear notificación para el usuario asignado
+      const userNotification = await this.create({
+        destinationUserId: assignedUserId,
+        taskId: task.id,
+        type: NotificationType.NEW_TASK,
+        title: NotificationTitle.NEW_TASK,
+        message: `You have been assigned a new task "${task.title}"`,
       });
 
-      await this.notificationRepository.save(notifications);
-      this.logger.log(
-        `Created ${notifications.length} notifications for new task ${task.id}`,
+      // Enviar notificación al usuario y a los admins
+      const notificationData: NotificationEventData = {
+        userId: assignedUserId,
+        taskId: task.id,
+        notificationType: NotificationType.NEW_TASK,
+        notificationTitle: NotificationTitle.NEW_TASK,
+        notificationMessage: `New task "${task.title}" assigned`,
+        timestamp: new Date().toISOString(),
+        notificationId: userNotification.id,
+      };
+
+      this.notificationGateway.sendNotification(
+        'taskNotification',
+        notificationData,
+        assignedUserId,
       );
     } catch (error) {
-      this.logger.error(`Error notifying about new task: ${error.message}`);
+      this.logger.error(`Error in notifyNewTask: ${error.message}`);
     }
   }
 
@@ -86,6 +120,23 @@ export class NotificationService {
       });
 
       await this.notificationRepository.save(notifications);
+
+      // Send WebSocket notification to each user
+      for (const user of users) {
+        const notificationDto: CreateNotificationDto = {
+          destinationUserId: user.id,
+          taskId: task.id,
+          type: NotificationType.UPDATE_TASK,
+          title: NotificationTitle.UPDATE_TASK,
+          message: `Task "${task.title}" has been updated`,
+        };
+        this.notificationGateway.sendToUser(
+          user.id,
+          'taskNotification',
+          notificationDto,
+        );
+      }
+
       this.logger.log(
         `Created ${notifications.length} notifications for updated task ${task.id}`,
       );
@@ -112,6 +163,22 @@ export class NotificationService {
       });
 
       await this.notificationRepository.save(notifications);
+
+      // Send WebSocket notification to each user
+      for (const user of users) {
+        const notificationDto: CreateNotificationDto = {
+          destinationUserId: user.id,
+          type: NotificationType.DELETE_TASK,
+          title: NotificationTitle.DELETE_TASK,
+          message: `Task "${taskTitle}" has been deleted`,
+        };
+        this.notificationGateway.sendToUser(
+          user.id,
+          'taskNotification',
+          notificationDto,
+        );
+      }
+
       this.logger.log(
         `Created ${notifications.length} notifications for deleted task ${taskId}`,
       );
@@ -125,31 +192,33 @@ export class NotificationService {
   // Notify admins about a new user
   async notifyNewUser(user: User): Promise<void> {
     try {
-      // Get all admin users
-      const admins = await this.userRepository.find({
-        where: { roles: In([ValidRoles.ADMIN]) },
-      });
+      // Obtener todos los admins
+      const admins = await this.getAdminUsers();
 
-      if (admins.length === 0) {
-        this.logger.log('No admins found to notify about new user');
-        return;
-      }
-
-      // Create notifications for each admin
-      const notifications = admins.map((admin) => {
-        return this.notificationRepository.create({
+      // Crear notificaciones para cada admin
+      for (const admin of admins) {
+        const notification = await this.create({
           destinationUserId: admin.id,
           type: NotificationType.NEW_USER,
           title: NotificationTitle.NEW_USER,
-          message: `New user ${user.firstName} ${user.lastName} (${user.email}) has registered`,
-          read: false,
+          message: `New user ${user.firstName} ${user.lastName} (${user.email}) registered`,
         });
-      });
 
-      await this.notificationRepository.save(notifications);
-      this.logger.log(
-        `Created ${notifications.length} notifications for admins about new user ${user.id}`,
-      );
+        const notificationData: NotificationEventData = {
+          userId: user.id, // ID del nuevo usuario
+          notificationType: NotificationType.NEW_USER,
+          notificationTitle: NotificationTitle.NEW_USER,
+          notificationMessage: `New user ${user.firstName} ${user.lastName} registered`,
+          timestamp: new Date().toISOString(),
+          notificationId: notification.id,
+        };
+
+        // Enviar solo a admins (no se especifica userId ya que es solo para admins)
+        this.notificationGateway.sendNotification(
+          'userNotification',
+          notificationData,
+        );
+      }
     } catch (error) {
       this.logger.error(`Error notifying about new user: ${error.message}`);
     }
@@ -211,6 +280,33 @@ export class NotificationService {
         `Error counting unread notifications: ${error.message}`,
       );
       throw new CustomException('Failed to count unread notifications');
+    }
+  }
+
+  // Get all admin users
+  async getAdminUsers(): Promise<User[]> {
+    try {
+      // Use ANY instead of the containment operator
+      return await this.userRepository
+        .createQueryBuilder('user')
+        .where(':role = ANY(user.roles)', { role: ValidRoles.ADMIN })
+        .getMany();
+    } catch (error) {
+      this.logger.error(`Error fetching admin users: ${error.message}`);
+      return [];
+    }
+  }
+
+  // Add this method to your NotificationService class
+  async getUserWithRoles(userId: string): Promise<User | null> {
+    try {
+      return await this.userRepository.findOne({
+        where: { id: userId },
+        select: ['id', 'roles'],
+      });
+    } catch (error) {
+      this.logger.error(`Error fetching user roles: ${error.message}`);
+      return null;
     }
   }
 }

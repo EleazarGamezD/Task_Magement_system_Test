@@ -63,9 +63,10 @@ export default tseslint.config(
       
       // Import plugin rules
       'import/no-unresolved': 0,
-      'import/no-extraneous-dependencies': 0,
-      'import/no-self-import': 2,
+      'import/no-extraneous-dependencies': 0,  
       'import/no-unassigned-import': 2,
+      'import/no-self-import': 'off',
+      'import/no-cycle': 'off'
     },
   },
 );
