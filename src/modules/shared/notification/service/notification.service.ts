@@ -34,21 +34,6 @@ export class NotificationService {
     return NotificationGateway.getInstance();
   }
 
-  // Add this helper method to your NotificationService
-  private async ensureGatewayReady(maxWaitMs = 2000): Promise<boolean> {
-    const startTime = Date.now();
-
-    while (Date.now() - startTime < maxWaitMs) {
-      if (NotificationGateway.isReady()) {
-        return true;
-      }
-      await new Promise((resolve) => setTimeout(resolve, 100));
-    }
-
-    this.logger.warn(`Gateway not ready after ${maxWaitMs}ms wait`);
-    return false;
-  }
-
   // Create a single notification
   async create(
     createNotificationDto: CreateNotificationDto,
@@ -93,7 +78,7 @@ export class NotificationService {
 
       this.notificationGateway.sendNotification(
         'taskNotification',
-        notificationData,
+        { ...notificationData, notificationType: NotificationType.NEW_USER },
         assignedUserId,
       );
     } catch (error) {
@@ -130,11 +115,10 @@ export class NotificationService {
           title: NotificationTitle.UPDATE_TASK,
           message: `Task "${task.title}" has been updated`,
         };
-        this.notificationGateway.sendToUser(
-          user.id,
-          'taskNotification',
-          notificationDto,
-        );
+        this.notificationGateway.sendToUser(user.id, 'taskNotification', {
+          ...notificationDto,
+          notificationType: NotificationType.UPDATE_TASK,
+        });
       }
 
       this.logger.log(
@@ -172,11 +156,10 @@ export class NotificationService {
           title: NotificationTitle.DELETE_TASK,
           message: `Task "${taskTitle}" has been deleted`,
         };
-        this.notificationGateway.sendToUser(
-          user.id,
-          'taskNotification',
-          notificationDto,
-        );
+        this.notificationGateway.sendToUser(user.id, 'taskNotification', {
+          ...notificationDto,
+          notificationType: NotificationType.UPDATE_TASK,
+        });
       }
 
       this.logger.log(
@@ -214,10 +197,10 @@ export class NotificationService {
         };
 
         // Enviar solo a admins (no se especifica userId ya que es solo para admins)
-        this.notificationGateway.sendNotification(
-          'userNotification',
-          notificationData,
-        );
+        this.notificationGateway.sendNotification('userNotification', {
+          ...notificationData,
+          notificationType: NotificationType.NEW_USER,
+        });
       }
     } catch (error) {
       this.logger.error(`Error notifying about new user: ${error.message}`);
