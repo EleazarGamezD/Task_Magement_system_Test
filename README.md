@@ -141,6 +141,19 @@ When you run the database seed, the following default users are created:
   - **Swagger UI**: [http://localhost:3000/api-docs](http://localhost:3000/api-docs)
   - **OpenAPI JSON**: [http://localhost:3000/api-docs-json](http://localhost:3000/api-docs-json)
 
+ **Swagger UI TOKEN USE**:
+
+  Flirts Go to login Endpoint Make a login a copy manually the accessToken.
+  
+![alt text](image.png)
+
+ Next go to Authorize Button o Lock Button in the Endpoint Request and click on it.
+
+![alt text](image-1.png)
+
+ Finally paste the Token String in the authorization box, now you can use protected endpoints
+
+![alt text](image-2.png)
   ---
 
   ## 📱 WebSocket Notifications
