@@ -144,7 +144,7 @@ When you run the database seed, the following default users are created:
  **Swagger UI TOKEN USE**:
 
   Flirts Go to login Endpoint Make a login a copy manually the accessToken.
-  
+
 ![alt text](image.png)
 
  Next go to Authorize Button o Lock Button in the Endpoint Request and click on it.
@@ -270,7 +270,7 @@ When you run the database seed, the following default users are created:
 
   ---
 ## 👤 Author NOTE
-  **I dont make a unit testing because i don´t how to make it**
+  **I dont make a unit testing because i don´t know to make it**
 
   ## 👤 Author
 
