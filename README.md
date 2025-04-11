@@ -1,98 +1,265 @@
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+  <img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" />
+  </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+  <h1 align="center">Task Management System</h1>
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+  <p align="center">
+    A comprehensive task management system built with NestJS, featuring real-time notifications, user authentication, and role-based access control.
+  </p>
 
-## Description
+  <p align="center">
+    <img src="https://img.shields.io/badge/Task-Management-blue" alt="Task Management" />
+    <img src="https://img.shields.io/badge/NestJS-Framework-red" alt="NestJS Framework" />
+    <img src="https://img.shields.io/badge/WebSockets-Real--time-green" alt="WebSockets Real-time" />
+    <img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" />
+  </p>
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+  ---
 
-## Project setup
+  ## 📋 Overview
 
-```bash
-$ yarn install
-```
+  This Task Management System provides a robust API to create, read, update, and delete tasks. It includes user authentication, file uploads, real-time notifications via WebSockets, and comprehensive API documentation.
 
-## Compile and run the project
+  ---
 
-```bash
-# development
-$ yarn run start
+  ## 🚀 Features
 
-# watch mode
-$ yarn run start:dev
+  - **User Authentication**: Register, login, refresh tokens, and profile management.
+  - **Task Management**: CRUD operations for tasks with file attachments.
+  - **Real-time Notifications**: WebSockets for instant task updates.
+  - **Role-based Access Control**: Different permissions for admins and users.
+  - **API Documentation**: Interactive Swagger documentation.
+  - **File Uploads**: Support for profile photos and task attachments.
 
-# production mode
-$ yarn run start:prod
-```
+  ---
 
-## Run tests
+  ## 🛠️ Installation
 
-```bash
-# unit tests
-$ yarn run test
+  ```bash
+  # Clone the repository
+  git clone https://github.com/EleazarGamezD/Task_Magement_system_Test.git
 
-# e2e tests
-$ yarn run test:e2e
+  # Navigate to the project directory
+  cd Task_Magement_system_Test
 
-# test coverage
-$ yarn run test:cov
-```
+  # Install dependencies
+  yarn install
 
-## Deployment
+  # Setup environment variables
+  cp .env.example .env
+  # Edit the .env file with your configuration
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+  # Start the database using Docker
+  docker-compose up -d
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+  # Run database migrations
+  yarn db:sync
 
-```bash
-$ yarn install -g mau
-$ mau deploy
-```
+  # Seed the database
+  yarn seed:run
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+  # Start the application
+  yarn start:dev
+  ```
 
-## Resources
+  ### 🗄️ Database Setup
 
-Check out a few resources that may come in handy when working with NestJS:
+  The project uses TypeORM for database management. Configure your database connection in the `.env` file:
+  
+  ```env
+  # Server basic configuration
+  APP_NAME="Your Application Name"
+  PORT=YourPortNumber
+  API_VERSION="YourAPIVersion"
+  NODE_ENV=YourEnvironment # e.g., production, development
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+  # Auth Configuration
+  JWT_SECRET="YourJWTSecret"
+  JWT_EXPIRATION='YourJWTExpirationTime'
+  JWT_REFRESH_EXPIRATION='YourJWTRefreshExpirationTime'
 
-## Support
+  # Postgres Configuration
+  DB_HOST=YourDatabaseHost
+  DB_PORT=YourDatabasePort
+  DB_USER=YourDatabaseUser
+  DB_PASS=YourDatabasePassword
+  DB_NAME=YourDatabaseName
+  DB_SSL=YourDatabaseSSLSetting
+  BD_TYPEORM_LOGGING=YourTypeORMLoggingSetting
+  STAGE=YourStage
+  DB_CONTAINER=YourDatabaseContainerName
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+  # Minio Configuration
+  MINIO_PORT=YourMinioPort
+  MINIO_ENDPOINT=YourMinioEndpoint
+  MINIO_USE_SSL=YourMinioSSLSetting
+  MINIO_USER=YourMinioUser
+  MINIO_PASSWORD=YourMinioPassword
+  MINIO_BUCKET=YourMinioBucketName
+  MINIO_REGION=YourMinioRegion
+  ```
 
-## Stay in touch
+  #### Migrations
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+  ```bash
+  # Drop the Database
+  yarn db:drop
 
-## License
+  # Sync the Entities whit Database (develop purposes)
+  yarn db:sync
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+  # Seed the Database
+  yarn db:seed
+
+  # Reset the Database, this command execute all tree commands at time 
+  yarn db:reset
+  ```
+
+  #### Seed Data
+
+  To populate your database with initial data:
+
+  ```bash
+  yarn db:seed
+  ```
+
+### Default Users
+
+When you run the database seed, the following default users are created:
+
+| User Type      | Email                | Password     | Username     | Role  | Permissions                                      |
+|----------------|----------------------|--------------|--------------|-------|-------------------------------------------------|
+| Administrator  | admin@example.com   | Admin123     | adminuser    | ADMIN | READ_ALL_TASK, UPDATE_ALL_TASK, DELETE_ALL_TASK |
+| Regular User   | user@example.com    | Password123  | regularuser  | USER  | CREATE_OWN_TASK, READ_OWN_TASK, UPDATE_OWN_TASK, DELETE_OWN_TASK, READ_ALL_OWN_TASK |
+  ---
+
+  ## 📊 API Documentation
+
+  The API documentation is available via Swagger UI when the application is running:
+
+  - **Swagger UI**: [http://localhost:3000/api-docs](http://localhost:3000/api-docs)
+  - **OpenAPI JSON**: [http://localhost:3000/api-docs-json](http://localhost:3000/api-docs-json)
+
+  ---
+
+  ## 📱 WebSocket Notifications
+
+  The application includes real-time notifications via WebSockets. A test client is available at:
+
+  - **WebSocket Test Client**: [http://localhost:3000/api/V1/ws-test](http://localhost:3000/api/V1/ws-test)
+
+  ### WebSocket Events
+
+  | Direction       | Event Name               | Description                              |
+  |-----------------|--------------------------|------------------------------------------|
+  | Client → Server | `subscribeToNotifications` | Subscribe to receive notifications       |
+  | Client → Server | `getNotifications`        | Retrieve all notifications for the user  |
+  | Client → Server | `markAsRead`              | Mark a notification as read              |
+  | Server → Client | `NEW_TASK`                | Notification when a new task is created  |
+  | Server → Client | `UPDATE_TASK`             | Notification when a task is updated      |
+  | Server → Client | `DELETE_TASK`             | Notification when a task is deleted      |
+  | Server → Client | `taskNotification`        | General task notification channel        |
+  | Server → Client | `unreadCount`             | Number of unread notifications           |
+
+  ---
+
+  ## 🧪 Testing with Postman
+
+  A comprehensive Postman collection is included in the project for testing all API endpoints.
+
+  ### Collection Location
+
+  The Postman collection is located at:
+
+  `src/core/tools/postman/Task Management System.postman_collection.json`
+
+  ### Importing into Postman
+
+  1. Open Postman.
+  2. Click the "Import" button.
+  3. Select the collection file from the location above.
+
+  ---
+
+  ## 📁 Project Structure
+
+  ```plaintext
+  src/
+  ├── app.module.ts            # Main application module
+  ├── main.ts                  # Application entry point
+  ├── core/                    # Core functionality
+  │   ├── config/              # Configuration settings
+  │   ├── constants/           # Application constants
+  │   ├── enums/               # Enumeration types
+  │   ├── tools/               # Utility tools including Postman collection
+  │   └── utils/               # Utility functions
+  ├── modules/                 # Feature modules
+  │   ├── auth/                # Authentication module
+  │   ├── shared/              # Shared functionality
+  |   |   └── database/        # Database configuration
+  |   |   └── files/           # File Services
+  │   │   └── notification/    # WebSocket notifications
+  │   └── task/                # Task management module
+  ```
+
+  ---
+
+  ## 🔑 API Endpoints
+
+  ### Authentication
+
+  - `POST /api/V1/auth/register` - Register a new user.
+  - `POST /api/V1/auth/login` - Login.
+  - `POST /api/V1/auth/refresh` - Refresh JWT token.
+  - `DELETE /api/V1/auth/logout` - Logout.
+  - `PATCH /api/V1/auth/user` - Update user information.
+  - `GET /api/V1/auth/profile` - Get user profile.
+
+  ### Task Management
+
+  - `POST /api/V1/tasks/create` - Create a new task.
+  - `GET /api/V1/tasks/all` - Get all tasks with pagination.
+  - `GET /api/V1/tasks/get/:id` - Get a task by ID.
+  - `PATCH /api/V1/tasks/update/:id` - Update a task.
+  - `DELETE /api/V1/tasks/delete/:id` - Delete a task.
+
+  ---
+
+  ## 👨‍💻 Development
+
+  ```bash
+ # Install dependencies
+  yarn install
+
+  # Setup environment variables
+  cp .env.example .env
+  # Edit the .env file with your configuration
+
+  # Start the database using Docker
+  docker-compose up -d
+
+  # Run database migrations
+  yarn db:reset 
+
+  # Seed the database
+  yarn seed:run
+
+  # Start the application
+  yarn start:dev
+  ```
+
+  ---
+
+  ## 📄 License
+
+  This project is licensed under the MIT License - see the LICENSE file for details.
+
+  ---
+## 👤 Author NOTE
+  **I dont make a unit testing because i don´t how to make it**
+
+  ## 👤 Author
+
+  **Eleazar Gamez**  
+  [GitHub Profile](https://github.com/EleazarGamezD)
