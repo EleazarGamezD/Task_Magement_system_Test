@@ -6,7 +6,11 @@ import { Response } from 'express';
 @Controller('ws-test')
 export class WebSocketTestController {
   @Get()
-  @ApiOperation({ summary: 'WebSocket Test Client' })
+  @ApiOperation({
+    summary: 'WebSocket Test Client',
+    description:
+      '<a href="/api/V1/ws-test" target="_blank" class="swagger-ui-btn">Open WebSocket Test Client in New Tab</a><style>.swagger-ui-btn{background-color: #49cc90; color: white; padding: 8px 16px; border-radius: 4px; text-decoration: none; font-weight: bold; display: inline-block; margin-top: 10px;}</style>',
+  })
   getTestPage(@Res() res: Response) {
     const html = `
     <!DOCTYPE html>
