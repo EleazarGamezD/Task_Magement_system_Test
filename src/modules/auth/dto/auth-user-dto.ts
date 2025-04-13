@@ -22,7 +22,7 @@ export class LoginUserDto {
   })
   @IsString()
   @IsOptional()
-  userName: string;
+  userName?: string;
 
   @ApiProperty({
     description: 'User Password,The password',
