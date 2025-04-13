@@ -60,6 +60,7 @@ export default tseslint.config(
       '@typescript-eslint/require-await': 'off',
       '@typescript-eslint/restrict-template-expressions': 'off',
       '@typescript-eslint/no-unused-vars': 'off',
+      '@typescript-eslint/unbound-method': 'off',
       
       // Import plugin rules
       'import/no-unresolved': 0,
